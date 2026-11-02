@@ -1,0 +1,59 @@
+gmt gmtset PS_MEDIA a0
+gmt gmtset FONT_ANNOT_PRIMARY 10p
+gmt gmtset FONT_ANNOT_SECONDARY 10p
+gmt gmtset FONT_LABEL 10p
+
+#GRAFICO-----------------------------------------------------------------------------------
+
+PS=PS/GrigliaRicalcolata_iso_32-33
+
+
+cp -f  ../INPUT/Input_2D_iso Input.tmp
+#cp -f  ../INPUT/Input_2D Input.tmp
+
+gfortran FOR/Griglia.0.f
+
+./a.out
+
+
+#gmt psbasemap -R-50/50/-100/0 -JX25/25 -Ba6.25/a6.25.NWSE -P -X2 -Y10 -K > $PS.ps
+gmt psbasemap -R-50/50/-100/0 -JX25/25 -Ba25f12.5/a25f12.5.NWSe -P -X2 -Y10 -K > $PS.ps
+
+gmt psxy Elem-1.tmp -R -JX -O  -W0.1,0/0/0 -L -Gwhite -N -K  >> $PS.ps
+awk '{print($2,$3,$1)}'  N_elem.tmp  |gmt pstext -R -JX -O  -N -K >> $PS.ps
+
+awk '{print($2,$3)}'  Nodi.tmp  |gmt psxy  -R -JX -O  -Sc0.5 -Ggrey -N  -K>> $PS.ps
+awk '{print($2,$3)}'  ../fort.7  |gmt psxy  -R -JX -O -W1,red -N  -K>> $PS.ps
+awk '{print($2,$3)}'  ../fort.7  |gmt psxy  -R -JX -O  -Sc0.5 -Ggrey -W0.7,red -N  -K>> $PS.ps
+awk '{print($2,$3,$1)}'  Nodi.tmp  |gmt pstext -R -JX -O  -N  -K >> $PS.ps
+
+
+rm -f *.tmp *.out gmt.*
+
+#------GRIGLIA NUOVA
+cp -f  ../fort.14 Input.tmp
+
+gfortran FOR/Griglia.1.f
+
+./a.out
+
+gmt psbasemap -R-50/50/-100/0 -JX25/25 -Ba25f12.5/a25f12.5.NwSE -P -X27 -K -O >> $PS.ps
+gmt psxy Elem-1.tmp -R -JX -O  -W0.1,0/0/0 -L -Gwhite -N -K  >> $PS.ps
+awk '{print($2,$3,$1)}'  N_elem.tmp  |gmt pstext -R -JX -O  -N -K >> $PS.ps
+
+awk '{print($2,$3)}'  Nodi.tmp  |gmt psxy  -R -JX -O  -Sc0.5 -Ggrey -N  -K>> $PS.ps
+awk '{print($2,$3)}'  ../fort.8  |gmt psxy  -R -JX -O -W0.5,red,- -N  -K>> $PS.ps
+awk '{print($2,$3)}'  ../fort.8  |gmt psxy  -R -JX -O  -Sc0.5 -Ggrey -W0.7,red -N  -K>> $PS.ps
+awk '{print($2,$3,$1)}'  Nodi.tmp  |gmt pstext -R -JX -O  -N  >> $PS.ps
+
+ps2eps -f $PS.ps
+
+#open -a preview $PS.eps&
+gv $PS.eps &
+convert $PS.eps $PS.png
+
+
+
+
+rm -f *.tmp *.out gmt.*
+

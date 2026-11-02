@@ -1,0 +1,12 @@
+rm *.tmp Co*
+
+gfortran fault_refinement.f
+./a.out
+
+#cp fort.14 fort.14_16
+#cp fort.7 fort.7_16
+#cp fort.8 fott.8_16
+
+cd POST
+./2.grigliaRicalcolata
+
