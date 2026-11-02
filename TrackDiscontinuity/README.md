@@ -1,6 +1,6 @@
-## Discotninuity Tracking on previously computed model results
+# Discontinuity Tracking on previously computed model results
 
-The code `LetturaDynamic.f` loads the previously computed model results `*.t` and applies the DFNP method to the single time steps, to test the ability of the DFNP algorithm of detecting the position of a mechanical discontinuity within a finite-element subduction model. 
+The code `LetturaDynamic.f` loads the previously computed model results `*.t` and applies the DFNP method to single time steps to test the ability of the DFNP algorithm to detect the position of a mechanical discontinuity within a finite-element subduction model. 
 
 
 ```bash
